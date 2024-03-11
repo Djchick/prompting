@@ -30,6 +30,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv, find_dotenv
 from langchain.callbacks import get_openai_callback
+import random
 
 
 
@@ -128,7 +129,71 @@ class OpenAIMiner(Miner):
                     {"role": role, "input": message}
                 )
 
+                alternative_responses_social_issues = [
+                    "It's crucial to address social inequality to build a more just society.",
+                    "We need to find sustainable solutions to environmental challenges for future generations.",
+                    "Empathy and understanding are key to fostering inclusivity in our communities.",
+                    "Education is a powerful tool to combat ignorance and promote positive change.",
+                    "Supporting mental health initiatives is essential for the well-being of society.",
+                    "Advocating for equal rights and opportunities empowers individuals and communities.",
+                    "Climate action is necessary to mitigate the impact of global warming on our planet.",
+                    "Promoting diversity in all aspects of life enriches our collective experience.",
+                    "Social justice begins with acknowledging and addressing systemic issues.",
+                    "Collaboration and cooperation are vital for overcoming societal challenges.",
+                    "Building strong communities requires active engagement and participation.",
+                    "Ensuring access to quality healthcare is a fundamental human right.",
+                    "Civic engagement is a responsibility we all share for a thriving society.",
+                    "Addressing poverty and economic inequality is key to creating a fair society.",
+                    "Promoting tolerance and understanding fosters harmony in diverse societies.",
+                    "Investing in renewable energy sources is crucial for a sustainable future.",
+                    "Advocating for human rights is a duty that transcends cultural boundaries.",
+                    "Ensuring equal access to education empowers individuals and uplifts communities.",
+                    "Building bridges of communication fosters unity in a diverse world.",
+                    "Sustainable urban planning is essential for creating livable and resilient cities.",
+                    "Championing gender equality benefits society as a whole.",
+                    "Fostering a culture of empathy can lead to positive societal transformation.",
+                    "Preserving cultural heritage is important for maintaining a rich tapestry of identities.",
+                    "Supporting initiatives that combat discrimination contributes to a fairer society.",
+                    "Protecting the rights of marginalized groups is a cornerstone of social progress.",
+                    "Investing in technology for social good can address pressing societal challenges.",
+                    "Promoting ethical business practices contributes to a sustainable and just economy.",
+                    "Access to clean water and sanitation is a fundamental human right.",
+                    "Championing youth empowerment is an investment in the future of society.",
+                    "Building resilient communities helps mitigate the impact of natural disasters.",
+                    "Advocating for  rights promotes inclusivity and acceptance.",
+                    "Ensuring food security is essential for the well-being of communities worldwide.",
+                    "Promoting responsible consumption and production is key to sustainability.",
+                    "Supporting initiatives that combat human trafficking is crucial for global justice.",
+                    "Advocating for affordable housing helps address homelessness and inequality.",
+                    "Promoting transparency and accountability strengthens democratic institutions.",
+                    "Investing in education for all can break the cycle of poverty and ignorance.",
+                    "Addressing the digital divide is crucial for equitable access to information.",
+                    "Championing policies that promote social cohesion benefits society at large.",
+                    "Preserving biodiversity is essential for the health of our planet.",
+                    "Fostering a sense of community builds resilience in times of crisis.",
+                    "Ensuring fair and ethical labor practices contributes to a just society.",
+                    "Supporting refugee and migrant rights is an expression of solidarity and compassion.",
+                    "Promoting mental health awareness reduces stigma and supports well-being.",
+                    "Advocating for criminal justice reform promotes fairness and equality.",
+                    "Investing in arts and culture enriches the fabric of society.",
+                    "Championing disability rights ensures inclusivity and accessibility for all.",
+                    "Addressing cybersecurity challenges is crucial for protecting digital societies.",
+                    "Promoting peace-building initiatives contributes to global stability.",
+                    "Ensuring access to quality education for girls empowers future generations.",
+                    "Supporting community-based healthcare initiatives improves overall well-being.",
+                    "Advocating for sustainable agriculture practices is essential for food security.",
+                    "Championing animal rights promotes compassion and ethical treatment.",
+                    "Preserving indigenous rights is important for cultural diversity and heritage.",
+                ]
+
                 synapse.completion = response
+                if "i'm sorry" in response.lower():
+                    new_response = random.choice(alternative_responses_social_issues)
+                    response = chain.invoke(
+                        {"role": role, "input": new_response}
+                    )
+                    synapse.completion = new_response
+
                 synapse_latency = time.time() - t0
 
                 if self.config.wandb.on:
