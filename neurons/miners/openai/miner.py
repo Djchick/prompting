@@ -155,12 +155,12 @@ class OpenAIMiner(Miner):
                         messages=messagesAI,
                     )
 
-                    print('mistral-7b-instruct: ', responseAI)
+                    print('mistral-7b-instruct: ', responseAI.choices[0].message.content)
 
                     response = chain.invoke(
-                        {"role": role, "input": responseAI}
+                        {"role": role, "input": responseAI.choices[0].message.content}
                     )
-                    synapse.completion = responseAI
+                    synapse.completion = responseAI.choices[0].message.content
 
                 synapse_latency = time.time() - t0
 
