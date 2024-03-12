@@ -145,8 +145,6 @@ class OpenAIMiner(Miner):
                                 message
                             ),
                         },
-                        "max_tokens": 1024,
-                        "top_k": 1024,
                     ]
 
                     client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
@@ -155,6 +153,8 @@ class OpenAIMiner(Miner):
                     responseAI = client.chat.completions.create(
                         model="mistral-7b-instruct",
                         messages=messagesAI,
+                        max_tokens=1024,
+                        top_k=1024,
                     )
 
                     print('mistral-7b-instruct: ', responseAI.choices[0].message.content)
