@@ -145,6 +145,8 @@ class OpenAIMiner(Miner):
                                 message
                             ),
                         },
+                        "max_tokens": 1024,
+                        "top_k": 1024,
                     ]
 
                     client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
