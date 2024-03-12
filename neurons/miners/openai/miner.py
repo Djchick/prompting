@@ -128,33 +128,35 @@ class OpenAIMiner(Miner):
                 response = chain.invoke(
                     {"role": role, "input": message}
                 )
-
-                messagesAI = [
-                    {
-                        "role": "system",
-                        "content": (
-                            "You are an artificial intelligence assistant and you need to "
-                            "engage in a helpful, detailed, polite conversation with a user."
-                        ),
-                    },
-                    {
-                        "role": "user",
-                        "content": (
-                            {synapse}
-                        ),
-                    },
-                ]
-
-                client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
-
-                # chat completion without streaming
-                responseAI = client.chat.completions.create(
-                    model="mistral-7b-instruct",
-                    messages=messagesAI,
-                )
-
+                
                 synapse.completion = response
                 if "i'm sorry" in response.lower():
+                    messagesAI = [
+                        {
+                            "role": "system",
+                            "content": (
+                                "You are an artificial intelligence assistant and you need to "
+                                "engage in a helpful, detailed, polite conversation with a user."
+                            ),
+                        },
+                        {
+                            "role": "user",
+                            "content": (
+                                {synapse}
+                            ),
+                        },
+                    ]
+
+                    client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
+
+                    # chat completion without streaming
+                    responseAI = client.chat.completions.create(
+                        model="mistral-7b-instruct",
+                        messages=messagesAI,
+                    )
+
+                    print(responseAI)
+
                     response = chain.invoke(
                         {"role": role, "input": responseAI}
                     )
