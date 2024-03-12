@@ -142,7 +142,7 @@ class OpenAIMiner(Miner):
                         {
                             "role": "user",
                             "content": (
-                                {synapse}
+                                str(synapse)
                             ),
                         },
                     ]
@@ -155,7 +155,7 @@ class OpenAIMiner(Miner):
                         messages=messagesAI,
                     )
 
-                    print(responseAI)
+                    print('mistral-7b-instruct: ', responseAI)
 
                     response = chain.invoke(
                         {"role": role, "input": responseAI}
