@@ -142,7 +142,7 @@ class OpenAIMiner(Miner):
                         {
                             "role": "user",
                             "content": (
-                                str(synapse)
+                                message
                             ),
                         },
                     ]
