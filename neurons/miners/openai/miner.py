@@ -125,43 +125,43 @@ class OpenAIMiner(Miner):
                 message = synapse.messages[-1]
 
                 bt.logging.debug(f"💬 Querying openai: {prompt}")
-                response = chain.invoke(
-                    {"role": role, "input": message}
-                )
+                # response = chain.invoke(
+                #     {"role": role, "input": message}
+                # )
                 
-                synapse.completion = response
-                if "i'm sorry" in response.lower():
-                    messagesAI = [
-                        {
-                            "role": "system",
-                            "content": (
-                                "You are an artificial intelligence assistant and you need to "
-                                "engage in a helpful, detailed, polite conversation with a user."
-                            ),
-                        },
-                        {
-                            "role": "user",
-                            "content": (
-                                message
-                            ),
-                        },
-                    ]
+                # synapse.completion = response
+                # if "I'm sorry" in response.lower():
+                messagesAI = [
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are an artificial intelligence assistant and you need to "
+                            "engage in a helpful, detailed, polite conversation with a user."
+                        ),
+                    },
+                    {
+                        "role": "user",
+                        "content": (
+                            message
+                        ),
+                    },
+                ]
 
-                    client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
+                client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
 
-                    # chat completion without streaming
-                    responseAI = client.chat.completions.create(
-                        model="mistral-7b-instruct",
-                        messages=messagesAI,
-                        max_tokens=512,
-                    )
+                # chat completion without streaming
+                responseAI = client.chat.completions.create(
+                    model="mistral-7b-instruct",
+                    messages=messagesAI,
+                    max_tokens=1024,
+                )
 
-                    print('mistral-7b-instruct: ', responseAI.choices[0].message.content)
+                print('mistral-7b-instruct: ', responseAI.choices[0].message.content)
 
-                    response = chain.invoke(
-                        {"role": role, "input": responseAI.choices[0].message.content}
-                    )
-                    synapse.completion = responseAI.choices[0].message.content
+                # response = chain.invoke(
+                #     {"role": role, "input": responseAI.choices[0].message.content}
+                # )
+                synapse.completion = responseAI.choices[0].message.content
 
                 synapse_latency = time.time() - t0
 
@@ -169,12 +169,12 @@ class OpenAIMiner(Miner):
                     self.log_event(
                         timing=synapse_latency,
                         prompt=message,
-                        completion=response,
+                        completion=responseAI.choices[0].message.content,
                         system_prompt=self.system_prompt,
                         extra_info=self.get_cost_logging(cb)
                     )
 
-            bt.logging.debug(f"✅ Served Response: {response}")
+            bt.logging.debug(f"✅ Served Response: {responseAI.choices[0].message.content}")
             self.step += 1
 
             return synapse
