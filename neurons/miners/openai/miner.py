@@ -156,8 +156,6 @@ class OpenAIMiner(Miner):
                     max_tokens=1024,
                 )
 
-                print('mistral-7b-instruct: ', responseAI.choices[0].message.content)
-
                 # response = chain.invoke(
                 #     {"role": role, "input": responseAI.choices[0].message.content}
                 # )
@@ -174,7 +172,7 @@ class OpenAIMiner(Miner):
                         extra_info=self.get_cost_logging(cb)
                     )
 
-            bt.logging.debug(f"✅ Served Response: {responseAI.choices[0].message.content}")
+            bt.logging.debug(f"✅ Served Response mistral-7b-instruct: {responseAI.choices[0].message.content}")
             self.step += 1
 
             return synapse
