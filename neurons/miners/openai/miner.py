@@ -153,7 +153,7 @@ class OpenAIMiner(Miner):
                 responseAI = client.chat.completions.create(
                     model="mistral-7b-instruct",
                     messages=messagesAI,
-                    max_tokens=1024,
+                    max_tokens=512,
                 )
 
                 # response = chain.invoke(
